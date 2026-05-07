@@ -1,9 +1,4 @@
-/**
- * Core type definitions for audit sessions and results.
- * These types flow through the entire application.
- */
-
-/** Supported AI tools that SpendScope can audit */
+/** All supported AI tool identifiers */
 export type AiToolId =
   | "cursor"
   | "github-copilot"
@@ -12,61 +7,64 @@ export type AiToolId =
   | "anthropic-api"
   | "openai-api"
   | "gemini"
-  | "windsurf"
-  | "v0";
+  | "windsurf";
 
-/** Input from the user describing their tool usage */
-export interface AuditToolInput {
-  toolId: AiToolId;
-  seats: number;
+/** Primary use-case options */
+export type UseCase =
+  | "coding"
+  | "writing"
+  | "research"
+  | "data-analysis"
+  | "mixed";
+
+/** A single AI tool entry in the audit form */
+export interface ToolEntry {
+  id: string;           // stable client-side UUID
+  toolId: AiToolId | "";
   plan: string;
-  monthlySpend?: number; // optional override if user knows exact spend
+  monthlySpend: number | "";  // what the team actually pays
+  seats: number | "";
 }
 
-/** Result for a single tool after audit processing */
-export interface AuditToolResult {
-  toolId: AiToolId;
-  name: string;
-  currentMonthlyCost: number;
-  suggestedMonthlyCost: number;
-  potentialSavings: number;
-  savingsPercent: number;
-  overlapsWith?: AiToolId[];
-  recommendation: string;
-  severity: "low" | "medium" | "high";
+/** Full audit form payload */
+export interface AuditFormData {
+  teamSize: number | "";
+  useCase: UseCase | "";
+  tools: ToolEntry[];
 }
 
-/** The complete audit session */
-export interface AuditSession {
+/** Validation errors per tool entry */
+export interface ToolEntryErrors {
+  toolId?: string;
+  plan?: string;
+  monthlySpend?: string;
+  seats?: string;
+}
+
+/** Full form-level validation errors */
+export interface AuditFormErrors {
+  teamSize?: string;
+  useCase?: string;
+  general?: string;
+  tools: Record<string, ToolEntryErrors>;
+}
+
+/** Computed totals shown in the summary panel */
+export interface AuditTotals {
+  toolCount: number;
+  totalMonthlySpend: number;
+  totalSeats: number;
+}
+
+/**
+ * Serialisable snapshot stored in Supabase (Step 3).
+ * Designed to support shareable URLs and AI summaries.
+ */
+export interface AuditSubmission {
   id: string;
   slug: string;
-  teamSize: number;
-  tools: AuditToolInput[];
-  results: AuditToolResult[];
-  totalMonthlySpend: number;
-  totalPotentialSavings: number;
-  savingsPercent: number;
-  aiSummary?: string;
-  createdAt: Date;
-}
-
-/** Minimal audit data used for sharing (public URL) */
-export interface AuditShareData {
-  slug: string;
-  totalMonthlySpend: number;
-  totalPotentialSavings: number;
-  teamSize: number;
-  toolCount: number;
   createdAt: string;
-}
-
-/** Severity levels for overspend alerts */
-export type SeverityLevel = "low" | "medium" | "high";
-
-/** Audit form state (persisted in localStorage in Step 3) */
-export interface AuditFormState {
-  teamSize: number;
-  tools: AuditToolInput[];
-  step: number;
-  completed: boolean;
+  formData: AuditFormData;
+  totals: AuditTotals;
+  aiSummary?: string;
 }

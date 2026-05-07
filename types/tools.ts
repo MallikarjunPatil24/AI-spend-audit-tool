@@ -110,14 +110,4 @@ export const AI_TOOLS: Record<AiToolId, AiTool> = {
     website: "https://codeium.com/windsurf",
     description: "Agentic AI code editor",
   },
-  v0: {
-    id: "v0",
-    name: "v0",
-    vendor: "Vercel",
-    category: "ide-assistant",
-    color: "#000000",
-    plans: [],
-    website: "https://v0.dev",
-    description: "Vercel's AI UI generator",
-  },
 };

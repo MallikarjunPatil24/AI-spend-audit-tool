@@ -2,7 +2,7 @@ import { AI_TOOLS } from "@/types/tools";
 import type { AiToolId } from "@/types/audit";
 
 const FEATURED_TOOLS: { id: AiToolId; color: string }[] = [
-  { id: "cursor",         color: "#000000" },
+  { id: "cursor",         color: "#6366f1" },
   { id: "github-copilot", color: "#24292e" },
   { id: "claude",         color: "#d97757" },
   { id: "chatgpt",        color: "#10a37f" },
@@ -10,7 +10,6 @@ const FEATURED_TOOLS: { id: AiToolId; color: string }[] = [
   { id: "openai-api",     color: "#10a37f" },
   { id: "gemini",         color: "#4285f4" },
   { id: "windsurf",       color: "#5b5fc7" },
-  { id: "v0",             color: "#000000" },
 ];
 
 export function ToolLogos() {
