@@ -1,12 +1,8 @@
 /**
- * Stub module for Anthropic Claude AI integration.
- * Full implementation in Step 3.
- *
- * Will contain:
- * - Audit summary generation via Claude
- * - Savings explanation copy generation
- * - Personalized recommendations
- * - Prompt templates (see /PROMPTS.md)
+ * Public barrel export for the AI module.
  */
 
-export {}; // ensures TypeScript treats this as a module
+export { generateAuditSummary } from "./generate-summary";
+export { generateFallbackSummary } from "./fallback-summary";
+export { buildSummaryInput } from "./types";
+export type { AuditSummaryInput, AuditSummaryResponse } from "./types";

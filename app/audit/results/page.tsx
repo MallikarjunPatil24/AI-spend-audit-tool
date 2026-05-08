@@ -10,21 +10,23 @@ import { RecommendationCard } from "@/components/results/RecommendationCard";
 import { ToolBreakdownCard } from "@/components/results/ToolBreakdownCard";
 import { ResultsSkeleton } from "@/components/results/ResultsSkeleton";
 import { loadAuditResult } from "@/lib/utils/audit-storage";
+import { buildSummaryInput } from "@/lib/ai/types";
 import type { AuditResult } from "@/lib/audit/types";
+import type { AuditSummaryResponse } from "@/lib/ai/types";
 import { formatMonthly } from "@/lib/formatters/currency";
 
 // ─── Share helper ─────────────────────────────────────────────────────────────
 
 function handleShare(result: AuditResult) {
-  const text = `I just audited my team's AI stack with SpendScope and found ${formatMonthly(result.totalMonthlySavings)} in potential savings (score: ${result.optimizationScore}/100). Try it free → https://spendscope.app/audit`;
-  if (navigator.share) {
-    navigator.share({ title: "My SpendScope Audit", text });
+  const text = `I audited my team's AI stack with SpendScope — found ${formatMonthly(result.totalMonthlySavings)} in potential savings (score: ${result.optimizationScore}/100). Try it free → https://spendscope.app/audit`;
+  if (typeof navigator !== "undefined" && navigator.share) {
+    navigator.share({ title: "My SpendScope Audit", text }).catch(() => null);
   } else {
-    navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
+    navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!")).catch(() => null);
   }
 }
 
-// ─── Empty / Error States ─────────────────────────────────────────────────────
+// ─── Empty State ──────────────────────────────────────────────────────────────
 
 function EmptyState() {
   return (
@@ -40,7 +42,7 @@ function EmptyState() {
           No audit found
         </h1>
         <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-          It looks like your session expired or you navigated here directly.
+          Your session may have expired or you navigated here directly.
           Run a fresh audit to see your results.
         </p>
         <Link href="/audit" className="btn-primary justify-center">
@@ -54,11 +56,38 @@ function EmptyState() {
 // ─── Results Page ─────────────────────────────────────────────────────────────
 
 export default function AuditResultsPage() {
-  const [result, setResult] = useState<AuditResult | null | "loading">("loading");
+  const [result,    setResult]    = useState<AuditResult | null | "loading">("loading");
+  const [aiSummary, setAiSummary] = useState<AuditSummaryResponse | null>(null);
+  const [loadingAi, setLoadingAi] = useState(false);
 
+  // Load audit result from sessionStorage
   useEffect(() => {
     setResult(loadAuditResult());
   }, []);
+
+  // Fire AI summary fetch once the result is available
+  useEffect(() => {
+    if (!result || result === "loading") return;
+
+    setLoadingAi(true);
+
+    const input = buildSummaryInput(result);
+
+    fetch("/api/audit/summarize", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify(input),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("API error");
+        return res.json() as Promise<AuditSummaryResponse>;
+      })
+      .then((data) => setAiSummary(data))
+      .catch(() => {
+        // Silently ignore — engine summary already shown
+      })
+      .finally(() => setLoadingAi(false));
+  }, [result]);
 
   return (
     <>
@@ -76,10 +105,12 @@ export default function AuditResultsPage() {
             {/* ── Body ── */}
             <div className="mx-auto max-w-4xl px-5 sm:px-8 py-10 sm:py-14 space-y-10">
 
-              {/* Score + Summary */}
+              {/* Score + AI Summary */}
               <OptimizationScore
                 score={result.optimizationScore}
-                summary={result.summary}
+                engineSummary={result.summary}
+                aiSummary={aiSummary}
+                isLoadingAi={loadingAi}
               />
 
               {/* Recommendations */}
@@ -109,7 +140,7 @@ export default function AuditResultsPage() {
                     id="tools-heading"
                     className="text-[1.1rem] font-extrabold tracking-tight text-foreground mb-5"
                   >
-                    Your Tool Breakdown
+                    Tool Breakdown
                   </h2>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {result.toolBreakdowns.map((bd) => (
@@ -121,7 +152,7 @@ export default function AuditResultsPage() {
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
                   <Link href="/audit" className="btn-outline gap-2">
                     <ArrowLeft className="h-4 w-4" />
                     Edit my audit
@@ -136,9 +167,8 @@ export default function AuditResultsPage() {
                     Share results
                   </button>
                 </div>
-                <p className="text-[11px] text-muted-foreground text-center">
-                  Results are estimates based on public pricing verified {new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" })}.
-                  Always verify with your vendor before making plan changes.
+                <p className="text-[11px] text-muted-foreground text-center sm:text-right">
+                  Verified {new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
                 </p>
               </div>
 
@@ -150,8 +180,8 @@ export default function AuditResultsPage() {
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
                   <strong className="text-foreground">Disclaimer:</strong> SpendScope uses publicly
                   available vendor pricing and conservative estimation logic. Actual savings may vary
-                  depending on contractual terms, usage patterns, and billing cycles. Recommendations
-                  are informational only and do not constitute financial or procurement advice.
+                  depending on contractual terms, usage patterns, and billing cycles. AI-generated summaries
+                  reference only data you provided and do not constitute financial or procurement advice.
                 </p>
               </div>
             </div>
