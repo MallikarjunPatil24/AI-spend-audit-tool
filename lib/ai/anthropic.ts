@@ -1,73 +1,57 @@
 /**
- * Thin Anthropic SDK wrapper.
+ * Google Gemini API client wrapper.
  * Server-side only — never import in client components.
  *
- * Responsibilities:
- * - Initialise the Anthropic client once (singleton)
- * - Enforce a hard timeout on all requests
- * - Surface a typed error for the caller to handle gracefully
+ * Model: gemini-1.5-flash — fast, cost-efficient, great for structured summarisation.
+ * Timeout: 15s hard limit via AbortController.
  */
 
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-/** Shared client instance (initialised lazily) */
-let _client: Anthropic | null = null;
+let _client: GoogleGenerativeAI | null = null;
 
-function getClient(): Anthropic {
+function getClient(): GoogleGenerativeAI {
   if (!_client) {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey) {
-      throw new Error("ANTHROPIC_API_KEY is not configured");
-    }
-    _client = new Anthropic({ apiKey });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) throw new Error("GEMINI_API_KEY is not configured");
+    _client = new GoogleGenerativeAI(apiKey);
   }
   return _client;
 }
 
-export interface ClaudeTextResponse {
+export interface GeminiTextResponse {
   text: string;
   model: string;
-  inputTokens: number;
-  outputTokens: number;
 }
 
 /**
- * Calls Claude with a timeout.
- * Throws on API error — callers should catch and use fallback.
+ * Calls Gemini with a combined system + user prompt and a timeout.
+ * Throws on any failure — callers must catch and use fallback.
  */
-export async function callClaude(
-  systemPrompt: string,
+export async function callGemini(
+  systemInstruction: string,
   userMessage: string,
   options: { maxTokens?: number; timeoutMs?: number } = {}
-): Promise<ClaudeTextResponse> {
-  const { maxTokens = 300, timeoutMs = 15_000 } = options;
+): Promise<GeminiTextResponse> {
+  const { maxTokens = 400, timeoutMs = 15_000 } = options;
 
   const controller = new AbortController();
   const timeout    = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
     const client = getClient();
-    const msg = await client.messages.create(
-      {
-        model:      "claude-3-5-haiku-20241022", // fast, cost-efficient for summaries
-        max_tokens: maxTokens,
-        system:     systemPrompt,
-        messages:   [{ role: "user", content: userMessage }],
-      },
-      { signal: controller.signal }
-    );
+    const model  = client.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction,
+      generationConfig: { maxOutputTokens: maxTokens },
+    });
 
-    const block = msg.content[0];
-    if (!block || block.type !== "text") {
-      throw new Error("Claude returned an unexpected response format");
-    }
+    const result = await model.generateContent(userMessage);
+    const text   = result.response.text().trim();
 
-    return {
-      text:         block.text.trim(),
-      model:        msg.model,
-      inputTokens:  msg.usage.input_tokens,
-      outputTokens: msg.usage.output_tokens,
-    };
+    if (!text) throw new Error("Gemini returned an empty response");
+
+    return { text, model: "gemini-1.5-flash" };
   } finally {
     clearTimeout(timeout);
   }

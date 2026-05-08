@@ -159,15 +159,14 @@ at zero marginal cost per audit.
 
 ## Model Selection
 
-**Model used:** `claude-3-5-haiku-20241022`
+**Model used:** `gemini-1.5-flash`
 
 **Rationale:**
-- Haiku is the fastest and most cost-efficient Anthropic model
-- A 100-word summary generation requires ~200–300 output tokens
-- Haiku handles structured JSON input well at this task type
-- Sonnet or Opus would add latency and cost without meaningful quality improvement
-  for a constrained, structured summarisation task
-- If summary quality needs to improve, upgrade to Sonnet and re-evaluate
+- Gemini 1.5 Flash is Google's fastest and most cost-efficient model
+- Excellent at structured JSON input → prose summarisation tasks
+- Low latency makes it ideal for non-blocking background generation
+- System instruction support enables role anchoring without extra user-turn tokens
+- If summary quality needs to improve, upgrade to `gemini-1.5-pro` and re-evaluate
 
 ---
 
@@ -175,10 +174,10 @@ at zero marginal cost per audit.
 
 | Setting      | Value               | Rationale                              |
 |---|---|---|
-| max_tokens   | 300                 | 120-word summary ≈ 180 tokens; buffer for safety |
-| timeout      | 15,000ms            | P99 response time for Haiku; above this = fallback |
-| temperature  | (default: 1)        | Intentionally not set — minor variation acceptable |
-| model        | claude-3-5-haiku    | Cost/speed optimised for constrained summarisation |
+| maxOutputTokens | 400              | 120-word summary ≈ 180 tokens; buffer for safety |
+| timeout      | 15,000ms            | P99 response time for Flash; above this = fallback |
+| model        | gemini-1.5-flash    | Cost/speed optimised for constrained summarisation |
+| API key env  | GEMINI_API_KEY      | Server-side only, never exposed to client |
 
 ---
 

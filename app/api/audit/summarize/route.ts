@@ -1,11 +1,11 @@
 /**
  * POST /api/audit/summarize
  *
- * Accepts a minimal AuditSummaryInput payload, calls Claude,
+ * Accepts a minimal AuditSummaryInput payload, calls Gemini 1.5 Flash,
  * returns a professional summary or deterministic fallback.
  *
  * Security:
- * - ANTHROPIC_API_KEY is never exposed to the client
+ * - GEMINI_API_KEY is never exposed to the client
  * - Input is validated before being passed to Claude
  * - All errors are absorbed — never returned raw
  *
