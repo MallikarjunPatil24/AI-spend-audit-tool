@@ -1,13 +1,21 @@
 /**
- * Stub module for the audit engine.
- * Full implementation in Step 2.
- *
- * Will contain:
- * - Per-seat cost calculations per AI tool
- * - Benchmark comparisons (industry avg usage)
- * - Overlap detection (e.g., Cursor + Copilot doing the same job)
- * - Savings opportunity scoring
- * - Audit result serialization for DB storage
+ * Public API for the SpendScope audit module.
+ * Import from here — not from internal files directly.
  */
 
-export {}; // ensures TypeScript treats this as a module
+export { runAudit } from "./engine";
+export type { AuditResult, AuditRecommendation, ToolBreakdown, ConfidenceLevel, RecommendationType, RuleContext } from "./types";
+export { calculateOptimizationScore, generateSummary } from "./scoring";
+
+// Individual rules exported for unit testing
+export {
+  checkTierRightSize,
+  checkDuplicateCodingAssistants,
+  checkDuplicateChatAssistants,
+  checkApiVsSubscriptionOverlap,
+  checkSeatOverprovisioning,
+  checkClaudeMaxNecessity,
+  checkHighApiSpend,
+  checkCopilotEnterpriseFit,
+  ALL_RULES,
+} from "./rules";
