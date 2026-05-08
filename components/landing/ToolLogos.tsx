@@ -1,7 +1,7 @@
 import { AI_TOOLS } from "@/types/tools";
 import type { AiToolId } from "@/types/audit";
 
-const FEATURED_TOOLS: { id: AiToolId; color: string }[] = [
+const TOOLS: { id: AiToolId; color: string }[] = [
   { id: "cursor",         color: "#6366f1" },
   { id: "github-copilot", color: "#24292e" },
   { id: "claude",         color: "#d97757" },
@@ -16,41 +16,32 @@ export function ToolLogos() {
   return (
     <section
       id="tools"
-      className="py-16 px-5 border-y border-border/50"
-      style={{ background: "linear-gradient(to bottom, var(--muted), var(--background))" }}
+      className="bg-white dark:bg-[#1a0f0a] py-14 px-5 border-b border-border"
       aria-label="Supported AI tools"
     >
       <div className="mx-auto max-w-5xl">
-        <p className="text-center text-[11px] font-semibold text-muted-foreground uppercase tracking-[0.12em] mb-8">
+        <p className="text-center text-[11px] font-bold text-muted-foreground uppercase tracking-[0.14em] mb-8">
           Audits every tool your team already uses
         </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
-          {FEATURED_TOOLS.map(({ id, color }) => {
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          {TOOLS.map(({ id, color }) => {
             const tool = AI_TOOLS[id];
             return (
-              <ToolChip key={id} name={tool.name} color={color} />
+              <div
+                key={id}
+                className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground hover:border-primary/30 hover:shadow-sm transition-all duration-150 cursor-default"
+              >
+                <span
+                  className="h-2 w-2 rounded-full flex-shrink-0"
+                  style={{ backgroundColor: color }}
+                  aria-hidden="true"
+                />
+                {tool.name}
+              </div>
             );
           })}
         </div>
       </div>
     </section>
-  );
-}
-
-function ToolChip({ name, color }: { name: string; color: string }) {
-  const isDark = color === "#000000" || color === "#24292e";
-
-  return (
-    <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-medium text-card-foreground shadow-xs hover:shadow-sm hover:border-primary/20 transition-all duration-200 cursor-default select-none">
-      <span
-        className="h-2 w-2 rounded-full flex-shrink-0 ring-1 ring-black/5"
-        style={{
-          backgroundColor: isDark ? "#374151" : color,
-        }}
-        aria-hidden="true"
-      />
-      {name}
-    </div>
   );
 }

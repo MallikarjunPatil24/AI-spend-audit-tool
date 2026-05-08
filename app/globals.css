@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── SpendScope Design System ───────────────────────────────────────────── */
+/* ─── SpendScope × Voi-inspired Design System ────────────────────────────── */
 
 @theme inline {
   --color-background: var(--background);
@@ -38,109 +38,118 @@
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-geist-mono);
-  --radius-sm: calc(var(--radius) * 0.5);
-  --radius-md: calc(var(--radius) * 0.75);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.5);
-  --radius-2xl: calc(var(--radius) * 2);
-  --radius-3xl: calc(var(--radius) * 3);
+
+  /* Plus Jakarta Sans */
+  --font-sans: var(--font-jakarta);
+
+  /* Voi-style radius: very rounded */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 3rem;
+  --radius-pill: 9999px;
 }
 
-/* ─── Light Mode (Stripe/Linear inspired) ────────────────────────────────── */
+/* ─── Light Mode ─────────────────────────────────────────────────────────── */
 
 :root {
+  /* Voi coral-red brand */
+  --coral: #E85D4A;
+  --coral-dark: #d44a38;
+  --coral-light: #f07060;
+  --coral-muted: #fde8e5;
+
   --background: #ffffff;
-  --foreground: #0a0a0a;
+  --foreground: #1a1a1a;
 
   --card: #ffffff;
-  --card-foreground: #0a0a0a;
+  --card-foreground: #1a1a1a;
 
   --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
+  --popover-foreground: #1a1a1a;
 
-  /* Electric indigo — sophisticated, not garish */
-  --primary: #4f46e5;
+  --primary: #E85D4A;
   --primary-foreground: #ffffff;
 
-  --secondary: #f4f4f5;
-  --secondary-foreground: #18181b;
+  --secondary: #fde8e5;
+  --secondary-foreground: #c0392b;
 
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
 
-  --accent: #ede9fe;
-  --accent-foreground: #4338ca;
+  --accent: #fde8e5;
+  --accent-foreground: #E85D4A;
 
-  --destructive: #ef4444;
+  --destructive: #dc2626;
 
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #4f46e5;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #E85D4A;
 
-  --radius: 0.75rem;
+  --radius: 1rem;
 
-  --chart-1: #4f46e5;
-  --chart-2: #7c3aed;
-  --chart-3: #2563eb;
-  --chart-4: #0891b2;
-  --chart-5: #059669;
+  --chart-1: #E85D4A;
+  --chart-2: #f07060;
+  --chart-3: #c0392b;
+  --chart-4: #ffa58c;
+  --chart-5: #3b82f6;
 
   --sidebar: #fafafa;
-  --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #4f46e5;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #E85D4A;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #ede9fe;
-  --sidebar-accent-foreground: #4338ca;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #4f46e5;
+  --sidebar-accent: #fde8e5;
+  --sidebar-accent-foreground: #E85D4A;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #E85D4A;
 }
 
-/* ─── Dark Mode (Vercel/Linear dark) ─────────────────────────────────────── */
+/* ─── Dark Mode ──────────────────────────────────────────────────────────── */
 
 .dark {
-  --background: #09090b;
+  --background: #1a0f0a;
   --foreground: #fafafa;
 
-  --card: #111113;
+  --card: #2a1812;
   --card-foreground: #fafafa;
 
-  --popover: #111113;
+  --popover: #2a1812;
   --popover-foreground: #fafafa;
 
-  --primary: #818cf8;
-  --primary-foreground: #1e1b4b;
+  --primary: #f07060;
+  --primary-foreground: #1a0f0a;
 
-  --secondary: #1c1c1f;
-  --secondary-foreground: #e4e4e7;
+  --secondary: #3a1f18;
+  --secondary-foreground: #fca99e;
 
-  --muted: #1c1c1f;
-  --muted-foreground: #71717a;
+  --muted: #2a1812;
+  --muted-foreground: #a3a3a3;
 
-  --accent: #1e1b4b;
-  --accent-foreground: #a5b4fc;
+  --accent: #3a1f18;
+  --accent-foreground: #f07060;
 
   --destructive: #f87171;
 
   --border: rgba(255,255,255,0.08);
   --input: rgba(255,255,255,0.10);
-  --ring: #818cf8;
+  --ring: #f07060;
 
-  --chart-1: #818cf8;
-  --chart-2: #a78bfa;
-  --chart-3: #60a5fa;
-  --chart-4: #34d399;
-  --chart-5: #f472b6;
+  --chart-1: #f07060;
+  --chart-2: #E85D4A;
+  --chart-3: #fca99e;
+  --chart-4: #c0392b;
+  --chart-5: #60a5fa;
 
-  --sidebar: #0f0f11;
+  --sidebar: #200e0a;
   --sidebar-foreground: #fafafa;
-  --sidebar-primary: #818cf8;
-  --sidebar-primary-foreground: #1e1b4b;
-  --sidebar-accent: #1e1b4b;
-  --sidebar-accent-foreground: #a5b4fc;
+  --sidebar-primary: #f07060;
+  --sidebar-primary-foreground: #1a0f0a;
+  --sidebar-accent: #3a1f18;
+  --sidebar-accent-foreground: #f07060;
   --sidebar-border: rgba(255,255,255,0.06);
-  --sidebar-ring: #818cf8;
+  --sidebar-ring: #f07060;
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -156,7 +165,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "cv11", "ss01", "ss03";
   }
 
   body {
@@ -164,158 +172,120 @@
     line-height: 1.6;
   }
 
+  /* Voi-style selection: coral highlight */
   ::selection {
-    background: rgba(79, 70, 229, 0.15);
-    color: #4f46e5;
-  }
-
-  .dark ::selection {
-    background: rgba(129, 140, 248, 0.2);
-    color: #818cf8;
+    background: rgba(232, 93, 74, 0.18);
+    color: #E85D4A;
   }
 }
 
-/* ─── Utility Classes ─────────────────────────────────────────────────────── */
+/* ─── Utilities ──────────────────────────────────────────────────────────── */
 
 @layer utilities {
 
-  /* Gradient headline — Stripe-style precision */
+  /* Gradient text — coral */
   .gradient-text {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
+    background: linear-gradient(135deg, #E85D4A 0%, #f07060 60%, #ffa58c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .dark .gradient-text {
-    background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 50%, #93c5fd 100%);
+    background: linear-gradient(135deg, #f07060 0%, #fca99e 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Subtle dot grid — used in hero */
+  /* Voi coral section background */
+  .bg-coral {
+    background-color: #E85D4A;
+  }
+
+  /* Subtle dot grid */
   .bg-dot-grid {
-    background-image: radial-gradient(circle, #d4d4d8 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
 
+  .bg-coral .bg-dot-grid,
   .dark .bg-dot-grid {
-    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
   }
 
-  /* Glass morphism */
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .dark .glass {
-    background: rgba(17, 17, 19, 0.8);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  /* Animated shimmer for loading states */
-  .shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255,255,255,0.5) 50%,
-      transparent 100%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  /* Enterprise card hover — Linear/Stripe style */
-  .card-enterprise {
-    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-  }
-
-  .card-enterprise:hover {
-    box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.15),
-                0 8px 32px rgba(79, 70, 229, 0.08),
-                0 2px 8px rgba(0,0,0,0.04);
-    border-color: rgba(79, 70, 229, 0.25);
-    transform: translateY(-1px);
-  }
-
-  .dark .card-enterprise:hover {
-    box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.2),
-                0 8px 32px rgba(129, 140, 248, 0.07),
-                0 2px 8px rgba(0,0,0,0.3);
-    border-color: rgba(129, 140, 248, 0.25);
-    transform: translateY(-1px);
-  }
-
-  /* Primary button — MNC grade */
+  /* Voi-style pill primary button */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     height: 2.75rem;
-    padding: 0 1.5rem;
-    border-radius: 0.625rem;
-    background: #4f46e5;
+    padding: 0 1.75rem;
+    border-radius: 9999px;
+    background: #E85D4A;
     color: #ffffff;
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.01em;
     transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
-    box-shadow: 0 1px 3px rgba(79,70,229,0.3), 0 0 0 0 transparent;
+    box-shadow: 0 2px 8px rgba(232,93,74,0.30);
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
   }
 
   .btn-primary:hover {
-    background: #4338ca;
-    box-shadow: 0 4px 16px rgba(79,70,229,0.35), 0 1px 3px rgba(79,70,229,0.2);
+    background: #d44a38;
+    box-shadow: 0 4px 16px rgba(232,93,74,0.40);
     transform: translateY(-1px);
   }
 
   .btn-primary:active {
     transform: translateY(0);
-    box-shadow: 0 1px 3px rgba(79,70,229,0.2);
   }
 
-  .dark .btn-primary {
-    background: #818cf8;
-    color: #1e1b4b;
-    box-shadow: 0 1px 3px rgba(129,140,248,0.2);
+  /* White pill button (on coral backgrounds — Voi style) */
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding: 0 1.75rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #E85D4A;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
   }
 
-  .dark .btn-primary:hover {
-    background: #a5b4fc;
-    box-shadow: 0 4px 16px rgba(129,140,248,0.25);
+  .btn-white:hover {
+    background: #fde8e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   }
 
-  /* Outline button */
+  /* Outline pill button */
   .btn-outline {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     height: 2.75rem;
-    padding: 0 1.5rem;
-    border-radius: 0.625rem;
+    padding: 0 1.75rem;
+    border-radius: 9999px;
     background: transparent;
     color: var(--foreground);
     font-size: 0.9375rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    border: 1px solid var(--border);
+    font-weight: 600;
+    border: 1.5px solid var(--border);
     transition: background 0.15s ease, border-color 0.15s ease;
     cursor: pointer;
     text-decoration: none;
@@ -324,46 +294,64 @@
 
   .btn-outline:hover {
     background: var(--muted);
-    border-color: #a1a1aa;
+    border-color: #E85D4A;
+    color: #E85D4A;
   }
 
-  /* Section label — Stripe-style overline */
+  /* Section overline label */
   .section-label {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
+    gap: 0.5rem;
     font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #4f46e5;
+    color: #E85D4A;
   }
 
-  .dark .section-label {
-    color: #818cf8;
+  .bg-coral .section-label {
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* Voi white card (used on coral sections) */
+  .card-white {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   }
 
   /* Stat number */
   .stat-number {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 800;
     letter-spacing: -0.04em;
     line-height: 1;
   }
 
-  /* Noise texture overlay */
-  .noise::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.35;
-    pointer-events: none;
+  /* Enterprise card on white backgrounds */
+  .card-enterprise {
+    border-radius: 1.25rem;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .card-enterprise:hover {
+    box-shadow: 0 8px 32px rgba(232,93,74,0.10);
+    border-color: rgba(232,93,74,0.30);
+    transform: translateY(-2px);
   }
 
   /* Fade-up animation */
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
