@@ -39,8 +39,8 @@
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
 
-  /* Plus Jakarta Sans */
-  --font-sans: var(--font-jakarta);
+  /* Inter (build-safe) — Plus Jakarta Sans served via Google Fonts CDN at runtime */
+  --font-sans: var(--font-inter);
 
   /* Voi-style radius: very rounded */
   --radius-sm: 0.5rem;

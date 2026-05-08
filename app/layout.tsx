@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import "./globals.css";
 
-/* Plus Jakarta Sans — rounded, bold, modern; matches the Voi-style design */
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+/* Inter — clean, modern; Plus Jakarta Sans loaded via CSS @import for rounded headlines */
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -47,7 +47,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${jakarta.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>
           <TooltipProvider delay={200}>
             {children}

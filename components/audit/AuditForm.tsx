@@ -7,6 +7,8 @@ import { TeamInfoSection } from "./TeamInfoSection";
 import { ToolEntryCard } from "./ToolEntryCard";
 import { AddToolButton } from "./AddToolButton";
 import { AuditSummaryPanel } from "./AuditSummaryPanel";
+import { runAudit } from "@/lib/audit/engine";
+import { storeAuditResult } from "@/lib/utils/audit-storage";
 import type { UseCase, ToolEntry } from "@/types/audit";
 
 export function AuditForm() {
@@ -21,7 +23,8 @@ export function AuditForm() {
     e?.preventDefault();
     const valid = submitForm();
     if (valid) {
-      // Step 3: persist to Supabase and navigate to /audit/[slug]
+      const result = runAudit(formData);
+      storeAuditResult(result);
       router.push("/audit/results");
     }
   }
@@ -58,7 +61,7 @@ export function AuditForm() {
             </div>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary mb-0.5">
-                Step 1 of 2
+                Audit Your Stack
               </div>
               <h1 className="text-2xl font-extrabold tracking-[-0.025em] text-foreground sm:text-3xl">
                 Audit My AI Stack
