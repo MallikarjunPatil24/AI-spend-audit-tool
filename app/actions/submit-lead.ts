@@ -10,15 +10,15 @@ import { isRateLimited } from "@/lib/security/rate-limit";
 const leadSchema = z.object({
   auditId: z.string().uuid(),
   email: z.string().email({ message: "Please enter a valid email address." }),
-  companyName: z.string().optional(),
-  role: z.string().optional(),
-  teamSize: z.string().optional(),
-  honeypot: z.string().optional(),
+  companyName: z.string().nullish(),
+  role: z.string().nullish(),
+  teamSize: z.string().nullish(),
+  honeypot: z.string().nullish(),
   // Additional info needed for the email:
   totalMonthlySpend: z.number(),
   totalMonthlySavings: z.number(),
   optimizationScore: z.number(),
-  aiSummary: z.string().nullable().optional(),
+  aiSummary: z.string().nullish(),
   publicSlug: z.string(),
 });
 
@@ -63,9 +63,9 @@ export async function submitLeadAction(formData: FormData) {
     await createLead({
       audit_id: data.auditId,
       email: data.email,
-      company_name: data.companyName,
-      role: data.role,
-      team_size: data.teamSize,
+      company_name: data.companyName || null,
+      role: data.role || null,
+      team_size: data.teamSize || null,
     });
 
     // 5. Send Transactional Email
