@@ -1,13 +1,3 @@
-/**
- * Supabase Database type definitions.
- *
- * This file is a stub. In Step 2, generate the real types by running:
- *   npx supabase gen types typescript --project-id <your-project-id> > lib/supabase/types.ts
- *
- * Or link your project and use:
- *   npx supabase gen types typescript --linked
- */
-
 export type Json =
   | string
   | number
@@ -19,32 +9,53 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      /**
-       * Audits table — stores completed audit sessions.
-       * Full schema will be defined in Step 2.
-       */
       audits: {
         Row: {
           id: string;
+          public_slug: string;
+          tools_json: Json;
+          total_monthly_spend: number;
+          total_monthly_savings: number;
+          total_annual_savings: number;
+          optimization_score: number;
+          ai_summary: string | null;
+          is_public: boolean;
           created_at: string;
-          slug: string;
-          tools: Json;
-          monthly_spend: number;
-          potential_savings: number;
-          team_size: number;
-          summary: string | null;
         };
         Insert: {
           id?: string;
+          public_slug: string;
+          tools_json: Json;
+          total_monthly_spend: number;
+          total_monthly_savings: number;
+          total_annual_savings: number;
+          optimization_score: number;
+          ai_summary?: string | null;
+          is_public?: boolean;
           created_at?: string;
-          slug: string;
-          tools: Json;
-          monthly_spend: number;
-          potential_savings: number;
-          team_size: number;
-          summary?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["audits"]["Insert"]>;
+      };
+      leads: {
+        Row: {
+          id: string;
+          audit_id: string;
+          email: string;
+          company_name: string | null;
+          role: string | null;
+          team_size: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          audit_id: string;
+          email: string;
+          company_name?: string | null;
+          role?: string | null;
+          team_size?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["leads"]["Insert"]>;
       };
     };
     Views: Record<string, never>;

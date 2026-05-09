@@ -11,16 +11,20 @@ import { ToolBreakdownCard } from "@/components/results/ToolBreakdownCard";
 import { ResultsSkeleton } from "@/components/results/ResultsSkeleton";
 import { loadAuditResult } from "@/lib/utils/audit-storage";
 import { buildSummaryInput } from "@/lib/ai/types";
+import { LeadForm } from "@/components/leads/LeadForm";
+import { saveAuditAction } from "@/app/actions/save-audit";
 import type { AuditResult } from "@/lib/audit/types";
 import type { AuditSummaryResponse } from "@/lib/ai/types";
 import { formatMonthly } from "@/lib/formatters/currency";
 
 // ─── Share helper ─────────────────────────────────────────────────────────────
 
-function handleShare(result: AuditResult) {
-  const text = `I audited my team's AI stack with SpendScope — found ${formatMonthly(result.totalMonthlySavings)} in potential savings (score: ${result.optimizationScore}/100). Try it free → https://spendscope.app/audit`;
+function handleShare(slug: string | null, result: AuditResult) {
+  const url = slug ? `https://spendscope.app/audit/${slug}` : "https://spendscope.app/audit";
+  const text = `I audited my team's AI stack with SpendScope — found ${formatMonthly(result.totalMonthlySavings)} in potential savings (score: ${result.optimizationScore}/100). Check it out: ${url}`;
+  
   if (typeof navigator !== "undefined" && navigator.share) {
-    navigator.share({ title: "My SpendScope Audit", text }).catch(() => null);
+    navigator.share({ title: "My SpendScope Audit", text, url }).catch(() => null);
   } else {
     navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!")).catch(() => null);
   }
@@ -59,6 +63,11 @@ export default function AuditResultsPage() {
   const [result,    setResult]    = useState<AuditResult | null | "loading">("loading");
   const [aiSummary, setAiSummary] = useState<AuditSummaryResponse | null>(null);
   const [loadingAi, setLoadingAi] = useState(false);
+  
+  // DB State
+  const [dbStatus, setDbStatus] = useState<"pending" | "saving" | "saved" | "error">("pending");
+  const [auditId, setAuditId] = useState<string | null>(null);
+  const [publicSlug, setPublicSlug] = useState<string | null>(null);
 
   // Load audit result from sessionStorage
   useEffect(() => {
@@ -82,12 +91,37 @@ export default function AuditResultsPage() {
         if (!res.ok) throw new Error("API error");
         return res.json() as Promise<AuditSummaryResponse>;
       })
-      .then((data) => setAiSummary(data))
+      .then((data) => {
+        setAiSummary(data);
+        return data;
+      })
       .catch(() => {
         // Silently ignore — engine summary already shown
+        return null;
       })
-      .finally(() => setLoadingAi(false));
+      .finally(() => {
+        setLoadingAi(false);
+      });
   }, [result]);
+
+  // Save to DB after AI summary resolves (or immediately if it failed)
+  useEffect(() => {
+    if (!result || result === "loading" || loadingAi || dbStatus !== "pending") return;
+
+    setDbStatus("saving");
+    
+    saveAuditAction(result, aiSummary?.summary || null)
+      .then((res) => {
+        if (res.success && res.id && res.publicSlug) {
+          setAuditId(res.id);
+          setPublicSlug(res.publicSlug);
+          setDbStatus("saved");
+        } else {
+          setDbStatus("error");
+        }
+      })
+      .catch(() => setDbStatus("error"));
+  }, [result, loadingAi, aiSummary, dbStatus]);
 
   return (
     <>
@@ -159,7 +193,7 @@ export default function AuditResultsPage() {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => handleShare(result)}
+                    onClick={() => handleShare(publicSlug, result)}
                     className="btn-outline gap-2"
                     aria-label="Share these results"
                   >
@@ -171,6 +205,18 @@ export default function AuditResultsPage() {
                   Verified {new Date().toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
                 </p>
               </div>
+
+              {/* Lead Capture */}
+              {auditId && publicSlug && (
+                <section aria-labelledby="lead-heading">
+                  <LeadForm 
+                    auditId={auditId} 
+                    publicSlug={publicSlug} 
+                    result={result} 
+                    aiSummary={aiSummary?.summary || null} 
+                  />
+                </section>
+              )}
 
               {/* Disclaimer */}
               <div
