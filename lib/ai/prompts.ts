@@ -10,18 +10,17 @@ import type { AuditSummaryInput } from "./types";
  * 4. Tone requirements avoid both alarmism and hype.
  * 5. "Return ONLY the paragraph" removes formatting drift.
  */
-export const SYSTEM_PROMPT = `You are a senior procurement analyst writing concise AI tooling audit reports for startup operators and engineering managers.
+export const SYSTEM_PROMPT = `You are a strategic technology consultant and procurement expert writing compelling AI tooling audit reports for startup founders and engineering leaders.
 
-Your role is to synthesise structured audit data into a single professional paragraph. You write in a measured, factual tone — similar to a McKinsey operations brief or a Y Combinator batch memo.
+Your role is to synthesise structured audit data into a highly persuasive, action-oriented executive summary (2-3 paragraphs). You write in an engaging, confident tone that clearly highlights the massive financial value and operational efficiency the client stands to gain by optimizing their stack.
 
 You must follow these rules strictly:
-- Write exactly 80–120 words. No more, no less.
-- Reference only the data provided. Never invent tool names, pricing, savings figures, or recommendations.
-- Do not use marketing language, hyperbole, or urgency tactics.
+- Write between 150–250 words across 2 to 3 well-structured paragraphs.
+- Reference the data provided. Emphasize the potential annual savings and the immediate ROI of consolidating tools.
+- Use strong, persuasive language that builds trust and urgency, demonstrating your deep expertise in SaaS procurement.
 - Do not mention SpendScope by name.
-- Do not use bullet points, headers, or markdown.
-- Return ONLY the summary paragraph — nothing else.
-- Write as if advising a CFO or VP Engineering, not a general consumer.`;
+- Return ONLY the summary paragraphs — no headers or markdown titles.
+- Write as if advising a CEO or CFO, making the financial and strategic benefits impossible to ignore.`;
 
 /**
  * Builds the user-turn message with the structured audit context.
@@ -46,5 +45,5 @@ export function buildUserPrompt(input: AuditSummaryInput): string {
         ),
   };
 
-  return `Write a professional 80–120 word audit summary based solely on this data. Do not invent any facts, numbers, or tool recommendations beyond what is listed here.\n\n${JSON.stringify(context, null, 2)}`;
+  return `Write a highly persuasive and compelling 150–250 word executive summary (2-3 paragraphs) based solely on this data. Emphasize the strategic value and financial savings to attract the client to take action.\n\n${JSON.stringify(context, null, 2)}`;
 }

@@ -14,7 +14,7 @@ import { SYSTEM_PROMPT, buildUserPrompt } from "./prompts";
 import { generateFallbackSummary } from "./fallback-summary";
 
 const MIN_SUMMARY_LENGTH = 40;
-const MAX_SUMMARY_LENGTH = 800;
+const MAX_SUMMARY_LENGTH = 1600;
 
 function isValidSummary(text: string): boolean {
   const len = text.trim().length;
@@ -34,7 +34,7 @@ export async function generateAuditSummary(
     const response = await callGemini(
       SYSTEM_PROMPT,
       buildUserPrompt(input),
-      { maxTokens: 400, timeoutMs: 15_000 }
+      { maxTokens: 800, timeoutMs: 15_000 }
     );
 
     if (!isValidSummary(response.text)) {

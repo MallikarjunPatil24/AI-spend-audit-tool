@@ -13,22 +13,17 @@ a personalised executive summary paragraph, never for calculations, pricing, or 
 ### System Prompt
 
 ```
-You are a senior procurement analyst writing concise AI tooling audit reports
-for startup operators and engineering managers.
+You are a strategic technology consultant and procurement expert writing compelling AI tooling audit reports for startup founders and engineering leaders.
 
-Your role is to synthesise structured audit data into a single professional paragraph.
-You write in a measured, factual tone — similar to a McKinsey operations brief
-or a Y Combinator batch memo.
+Your role is to synthesise structured audit data into a highly persuasive, action-oriented executive summary (2-3 paragraphs). You write in an engaging, confident tone that clearly highlights the massive financial value and operational efficiency the client stands to gain by optimizing their stack.
 
 You must follow these rules strictly:
-- Write exactly 80–120 words. No more, no less.
-- Reference only the data provided. Never invent tool names, pricing, savings figures,
-  or recommendations.
-- Do not use marketing language, hyperbole, or urgency tactics.
+- Write between 150–250 words across 2 to 3 well-structured paragraphs.
+- Reference the data provided. Emphasize the potential annual savings and the immediate ROI of consolidating tools.
+- Use strong, persuasive language that builds trust and urgency, demonstrating your deep expertise in SaaS procurement.
 - Do not mention SpendScope by name.
-- Do not use bullet points, headers, or markdown.
-- Return ONLY the summary paragraph — nothing else.
-- Write as if advising a CFO or VP Engineering, not a general consumer.
+- Return ONLY the summary paragraphs — no headers or markdown titles.
+- Write as if advising a CEO or CFO, making the financial and strategic benefits impossible to ignore.
 ```
 
 ### User Message Structure
@@ -64,10 +59,8 @@ output that feels like a colleague's written review, not an AI response.
 that Claude understands. Vague instructions like "professional tone" leave too much
 latitude and produce inconsistent output.
 
-### Length Constraint (80–120 words)
-Executive stakeholders scan, not read. 80–120 words is long enough to include
-context and findings, short enough to not require scrolling. Claude adheres well
-to explicit word counts when stated in both the system prompt and user message.
+### Length Constraint (150–250 words)
+Executive stakeholders need a compelling narrative. 150–250 words across 2-3 paragraphs is long enough to include persuasive reasoning, highlight massive financial value, and encourage immediate action without being overwhelming. Claude adheres well to explicit word counts when stated in both the system prompt and user message.
 
 ### JSON Input vs Free-Form
 Passing structured JSON (rather than natural-language descriptions) reduces the
@@ -174,7 +167,7 @@ at zero marginal cost per audit.
 
 | Setting      | Value               | Rationale                              |
 |---|---|---|
-| maxOutputTokens | 400              | 120-word summary ≈ 180 tokens; buffer for safety |
+| maxOutputTokens | 800              | 250-word summary ≈ 400 tokens; buffer for safety |
 | timeout      | 15,000ms            | P99 response time for Flash; above this = fallback |
 | model        | gemini-1.5-flash    | Cost/speed optimised for constrained summarisation |
 | API key env  | GEMINI_API_KEY      | Server-side only, never exposed to client |
