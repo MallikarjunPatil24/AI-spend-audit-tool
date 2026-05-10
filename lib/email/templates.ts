@@ -3,7 +3,6 @@ import { formatCurrency, formatAnnual } from "@/lib/formatters/currency";
 interface AuditConfirmationTemplateProps {
   totalMonthlySpend: number;
   totalMonthlySavings: number;
-  optimizationScore: number;
   aiSummary: string | null;
   publicSlug: string;
 }
@@ -11,7 +10,6 @@ interface AuditConfirmationTemplateProps {
 export function generateAuditConfirmationHtml({
   totalMonthlySpend,
   totalMonthlySavings,
-  optimizationScore,
   aiSummary,
   publicSlug,
 }: AuditConfirmationTemplateProps): string {

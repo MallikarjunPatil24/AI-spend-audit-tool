@@ -18,7 +18,7 @@ export default function NotFound() {
             Audit Not Found
           </h1>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-            This audit report either doesn't exist, was deleted, or is no longer public.
+            This audit report either doesn&apos;t exist, was deleted, or is no longer public.
           </p>
           <Link href="/audit" className="btn-primary justify-center">
             Start a new audit

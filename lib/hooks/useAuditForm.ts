@@ -118,6 +118,7 @@ export function useAuditForm() {
 
   // Hydrate from localStorage once on mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData(loadFromStorage());
     setHydrated(true);
   }, []);
@@ -129,6 +130,7 @@ export function useAuditForm() {
 
   // Re-run validation live after first submit attempt
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (touched) setErrors(validateForm(formData));
   }, [formData, touched]);
 

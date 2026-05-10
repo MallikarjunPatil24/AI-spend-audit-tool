@@ -71,6 +71,7 @@ export default function AuditResultsPage() {
 
   // Load audit result from sessionStorage
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setResult(loadAuditResult());
   }, []);
 
@@ -78,6 +79,7 @@ export default function AuditResultsPage() {
   useEffect(() => {
     if (!result || result === "loading") return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoadingAi(true);
 
     const input = buildSummaryInput(result);
@@ -108,6 +110,7 @@ export default function AuditResultsPage() {
   useEffect(() => {
     if (!result || result === "loading" || loadingAi || dbStatus !== "pending") return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDbStatus("saving");
     
     saveAuditAction(result, aiSummary?.summary || null)

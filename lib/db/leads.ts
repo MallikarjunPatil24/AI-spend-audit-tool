@@ -22,6 +22,7 @@ export async function createLead(input: LeadInput) {
       company_name: input.company_name || null,
       role: input.role || null,
       team_size: input.team_size || null,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
   if (error) {

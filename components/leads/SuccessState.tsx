@@ -7,10 +7,10 @@ export function SuccessState() {
         <CheckCircle2 className="h-7 w-7 text-green-500" strokeWidth={2} />
       </div>
       <h3 className="text-xl font-extrabold tracking-tight text-foreground mb-2">
-        You're on the list!
+        You&apos;re on the list!
       </h3>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        We've sent a copy of your audit results to your inbox. We'll notify you
+        We&apos;ve sent a copy of your audit results to your inbox. We&apos;ll notify you
         when new optimization opportunities apply to your stack.
       </p>
     </div>

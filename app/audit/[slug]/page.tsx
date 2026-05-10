@@ -121,7 +121,7 @@ export default async function PublicAuditPage({ params }: PublicAuditPageProps) 
               Audit your own AI stack in 60 seconds
             </h3>
             <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-              Find out where you're overpaying for AI tooling and duplicate coverage without giving up your email.
+              Find out where you&apos;re overpaying for AI tooling and duplicate coverage without giving up your email.
             </p>
             <Link href="/audit" className="btn-primary">
               Start free audit

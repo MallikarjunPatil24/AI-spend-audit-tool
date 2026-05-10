@@ -37,6 +37,7 @@ export async function createAudit(
       optimization_score: result.optimizationScore,
       ai_summary: aiSummary,
       is_public: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     .select("id, public_slug")
     .single();
