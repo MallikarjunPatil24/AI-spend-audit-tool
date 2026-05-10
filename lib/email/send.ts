@@ -28,7 +28,7 @@ export async function sendAuditConfirmation(props: SendConfirmationProps) {
     });
 
     const { data, error } = await resend.emails.send({
-      from: "SpendScope <audit@spendscope.app>", // Update with verified domain in production
+      from: "SpendScope <onboarding@resend.dev>", // Testing domain provided by Resend
       to: props.email,
       subject: "Your SpendScope Audit Results & Savings Opportunities",
       html,
