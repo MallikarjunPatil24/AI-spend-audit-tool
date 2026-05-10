@@ -39,8 +39,8 @@ export function checkTierRightSize(ctx: RuleContext): AuditRecommendation[] {
     const currentPlan = catalog?.plans.find((p) => p.planId === bd.planId);
     if (!currentPlan || currentPlan.monthlyPricePerSeat === null) continue;
 
-    // Find next cheaper non-enterprise, non-API plan
-    const cheaper = catalog.plans.find(
+    // Find the next closest cheaper non-enterprise, non-API plan
+    const cheaperPlans = catalog.plans.filter(
       (p) =>
         !p.isApiTier &&
         !p.isEnterprise &&
@@ -48,6 +48,7 @@ export function checkTierRightSize(ctx: RuleContext): AuditRecommendation[] {
         p.monthlyPricePerSeat < currentPlan.monthlyPricePerSeat! &&
         (!p.minSeats || bd.reportedSeats >= p.minSeats)
     );
+    const cheaper = cheaperPlans.sort((a, b) => b.monthlyPricePerSeat! - a.monthlyPricePerSeat!)[0];
     if (!cheaper || cheaper.monthlyPricePerSeat === null) continue;
 
     // Only flag Business/Enterprise plans for small teams (≤ 4 seats)
@@ -188,9 +189,13 @@ export function checkApiVsSubscriptionOverlap(ctx: RuleContext): AuditRecommenda
 export function checkSeatOverprovisioning(ctx: RuleContext): AuditRecommendation[] {
   const results: AuditRecommendation[] = [];
   const { teamSize } = ctx.formData;
-  if (!teamSize || Number(teamSize) < 1) return [];
+  if (!teamSize) return [];
 
-  const team = Number(teamSize);
+  // Extract upper bound of team size (e.g. "1-10" -> 10, "11-50" -> 50, "500+" -> 500)
+  const match = String(teamSize).match(/(\d+)(?:\+|-$)/) || String(teamSize).match(/-(\d+)/);
+  const team = match ? Number(match[1]) : parseInt(String(teamSize));
+  
+  if (isNaN(team) || team < 1) return [];
 
   for (const bd of ctx.breakdowns) {
     if (bd.isApiTier) continue;
