@@ -1,105 +1,41 @@
-# ARCHITECTURE.md
+# Architecture Overview
 
-> System architecture, data flow, and stack justifications for SpendScope.
+SpendScope is built using a modern, scalable, and operator-focused tech stack designed for speed, maintainability, and rapid iteration.
 
----
+## Core Stack
 
-## System Diagram
-
-```mermaid
-graph TB
-    subgraph Client ["Client (Browser)"]
-        LP[Landing Page]
-        AF[Audit Form]
-        AR[Audit Results]
-    end
-
-    subgraph NextJS ["Next.js 15 App Router"]
-        RSC[React Server Components]
-        RC[Route Handlers / API]
-        MW[Middleware]
-    end
-
-    subgraph Services ["External Services"]
-        SB[(Supabase\nPostgreSQL)]
-        AN[Anthropic\nClaude API]
-        RS[Resend\nEmail]
-    end
-
-    LP --> RSC
-    AF --> RC
-    AR --> RSC
-    RC --> SB
-    RC --> AN
-    RC --> RS
-    RSC --> SB
-```
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript (Strict Mode)
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Database**: Supabase (PostgreSQL)
+- **AI/LLM**: Google Gemini (gemini-1.5-flash) via `@google/generative-ai`
+- **Email**: Resend
 
 ---
 
-## Data Flow
+## Architectural Decisions & Tradeoffs
 
-### Audit Submission (Step 2)
+### 1. The Audit Engine: Deterministic Math vs. AI Inference
+**Decision**: Calculate all savings, optimization scores, and actionable recommendations using a deterministic, rule-based TypeScript engine. Use the LLM *only* for synthesizing the executive summary prose.
 
-1. User fills out the audit form (client-side)
-2. Form submits to `/api/audits` Route Handler
-3. Server validates input with Zod
-4. Audit engine calculates spend + savings
-5. Result is written to Supabase `audits` table
-6. A unique slug is generated and returned
-7. User is redirected to `/audit/[slug]`
+**Reasoning**: LLMs hallucinate math. For a financial audit tool targeted at startups and procurement teams, trust is paramount. A single hallucinated pricing tier destroys credibility. By strictly separating the mathematical calculation layer from the language synthesis layer, we ensure that every dollar of claimed savings is defensible and traceable to public pricing data, while still providing a personalized, AI-driven experience.
 
-### Audit Results Page (Step 2)
+### 2. Post-Audit Lead Capture (Frictionless Onboarding)
+**Decision**: Allow users to run the complete audit and see high-level results *before* asking for an email address. 
 
-1. Next.js RSC fetches audit by slug from Supabase
-2. Claude API generates AI summary (Step 3)
-3. Results are rendered server-side (SEO-friendly)
-4. Shareable URL is displayed
+**Reasoning**: Modern SaaS users are fatigued by aggressive "gatekeeping." By proving immediate, tangible value first (the "aha!" moment), the conversion rate for capturing an email to send the detailed report significantly increases. It builds goodwill and positions SpendScope as a product-led growth (PLG) tool rather than a standard lead-gen trap.
 
----
+### 3. Public by Default (Viral Growth Loop)
+**Decision**: Audit reports are saved instantly upon completion and assigned a random, shareable 6-character public slug (`/audit/[slug]`).
 
-## Stack Justification
+**Reasoning**: Startups rely on word-of-mouth. If a founder runs an audit and saves $1,000/mo, their first instinct is to share it with their co-founder, their board, or on Twitter/Hacker News. By making reports public-by-default (while strictly stripping out PII like the user's email or company name), we create a seamless viral loop. 
 
-| Choice | Rationale |
-|---|---|
-| **Next.js 15 App Router** | RSC for SEO, streaming for performance, native TypeScript support |
-| **Supabase** | Managed PostgreSQL with typed client, real-time ready, Vercel-compatible |
-| **shadcn/ui** | Accessible component primitives, not a locked-in library — we own the code |
-| **Tailwind CSS v4** | Design system tokens, responsive utilities, no runtime overhead |
-| **Anthropic Claude** | Best-in-class long-context reasoning for audit summary generation |
-| **Resend** | Developer-first email API with React Email support |
-| **Zod** | Runtime type safety for all external data (forms, API, env vars) |
+### 4. Abuse Protection: Honeypot + Rate Limiting vs. CAPTCHA
+**Decision**: Implemented an invisible honeypot field and simple IP-based rate limiting on the server action instead of integrating Google reCAPTCHA or Turnstile.
 
----
+**Reasoning**: CAPTCHAs introduce significant user friction and degrade the premium feel of a SaaS product. A honeypot catches the vast majority of low-effort scraping bots silently, ensuring real users never have to click "I am not a robot" after just experiencing the polished audit reveal.
 
-## Database Schema (Planned — Step 2)
+### 5. Database Schema: Immutable Snapshots
+**Decision**: Store the complete `AuditResult` object (including generated recommendations and tool breakdowns) as an immutable JSON snapshot (`tools_json`) inside Supabase.
 
-```sql
--- audits: Stores completed audit sessions
-CREATE TABLE audits (
-  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  slug        TEXT UNIQUE NOT NULL,
-  created_at  TIMESTAMPTZ DEFAULT now(),
-  tools       JSONB NOT NULL,
-  team_size   INTEGER NOT NULL,
-  monthly_spend NUMERIC(10,2) NOT NULL,
-  potential_savings NUMERIC(10,2) NOT NULL,
-  ai_summary  TEXT,
-  metadata    JSONB DEFAULT '{}'
-);
-
-CREATE INDEX idx_audits_slug ON audits(slug);
-```
-
----
-
-## Performance Targets
-
-| Metric | Target |
-|---|---|
-| Lighthouse Performance | >= 85 |
-| Lighthouse Accessibility | >= 90 |
-| Lighthouse Best Practices | >= 90 |
-| LCP | < 2.5s |
-| CLS | < 0.1 |
-| TTFB | < 400ms (Vercel Edge) |
+**Reasoning**: Pricing changes constantly. If we only stored the input tools and dynamically re-calculated the savings on the public report page, a user returning to their report 6 months later might see completely different numbers, destroying the integrity of historical audits. Storing an immutable snapshot guarantees the report always reflects the state of the world at the exact moment it was generated.
