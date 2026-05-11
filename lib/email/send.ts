@@ -5,7 +5,6 @@ interface SendConfirmationProps {
   email: string;
   totalMonthlySpend: number;
   totalMonthlySavings: number;
-  optimizationScore: number;
   aiSummary: string | null;
   publicSlug: string;
 }
@@ -22,7 +21,6 @@ export async function sendAuditConfirmation(props: SendConfirmationProps) {
     const html = generateAuditConfirmationHtml({
       totalMonthlySpend: props.totalMonthlySpend,
       totalMonthlySavings: props.totalMonthlySavings,
-      optimizationScore: props.optimizationScore,
       aiSummary: props.aiSummary,
       publicSlug: props.publicSlug,
     });

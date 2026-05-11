@@ -63,9 +63,9 @@ export async function submitLeadAction(formData: FormData) {
     await createLead({
       audit_id: data.auditId,
       email: data.email,
-      company_name: data.companyName || null,
-      role: data.role || null,
-      team_size: data.teamSize || null,
+      company_name: data.companyName || undefined,
+      role: data.role || undefined,
+      team_size: data.teamSize || undefined,
     });
 
     // 5. Send Transactional Email
@@ -73,7 +73,6 @@ export async function submitLeadAction(formData: FormData) {
       email: data.email,
       totalMonthlySpend: data.totalMonthlySpend,
       totalMonthlySavings: data.totalMonthlySavings,
-      optimizationScore: data.optimizationScore,
       aiSummary: data.aiSummary || null,
       publicSlug: data.publicSlug,
     });

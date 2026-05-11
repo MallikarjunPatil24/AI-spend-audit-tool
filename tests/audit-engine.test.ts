@@ -7,16 +7,15 @@ describe("Audit Engine - Deterministic Calculations", () => {
   // 1. Savings calculation test
   it("calculates monthly and annual savings correctly for a simple overspend", () => {
     const input: AuditFormData = {
-      teamSize: "11-50",
-      companyStage: "Series A",
-      primaryGoal: "reduce-cost",
+      teamSize: 25,
+      useCase: "coding",
       tools: [
         {
           id: "1",
           toolId: "chatgpt",
           plan: "team",
-          seats: "10",
-          monthlySpend: "400", // ChatGPT Team is $30/mo. 10 seats = $300 expected.
+          seats: 10,
+          monthlySpend: 400, // ChatGPT Team is $30/mo. 10 seats = $300 expected.
         },
       ],
     };
@@ -37,16 +36,15 @@ describe("Audit Engine - Deterministic Calculations", () => {
   // 2. Downgrade recommendation test
     it("recommends downgrading when a small team is on a Business plan", () => {
     const input: AuditFormData = {
-      teamSize: "1-10",
-      companyStage: "Seed",
-      primaryGoal: "reduce-cost",
+      teamSize: 5,
+      useCase: "coding",
       tools: [
         {
           id: "2",
           toolId: "cursor",
           plan: "business",
-          seats: "2",
-          monthlySpend: "80", // Cursor Business is $40/seat
+          seats: 2,
+          monthlySpend: 80, // Cursor Business is $40/seat
         },
       ],
     };
@@ -63,16 +61,15 @@ describe("Audit Engine - Deterministic Calculations", () => {
   // 3. Optimization score test
   it("assigns a 100/100 score for a perfectly optimized stack", () => {
     const input: AuditFormData = {
-      teamSize: "1-10",
-      companyStage: "Seed",
-      primaryGoal: "reduce-cost",
+      teamSize: 5,
+      useCase: "coding",
       tools: [
         {
           id: "3",
           toolId: "cursor",
           plan: "pro",
-          seats: "5",
-          monthlySpend: "100", // Exactly $20/seat
+          seats: 5,
+          monthlySpend: 100, // Exactly $20/seat
         },
       ],
     };
@@ -87,16 +84,15 @@ describe("Audit Engine - Deterministic Calculations", () => {
   // 4. Low-savings honesty test
   it("generates an 'already-optimized' placeholder if no recommendations are found", () => {
     const input: AuditFormData = {
-      teamSize: "1-10",
-      companyStage: "Pre-seed",
-      primaryGoal: "reduce-cost",
+      teamSize: 2,
+      useCase: "writing",
       tools: [
         {
           id: "4",
           toolId: "claude",
           plan: "pro",
-          seats: "1",
-          monthlySpend: "20",
+          seats: 1,
+          monthlySpend: 20,
         },
       ],
     };
@@ -112,23 +108,22 @@ describe("Audit Engine - Deterministic Calculations", () => {
   // 5. Fallback summary test
   it("generates a deterministic fallback summary containing key metrics", () => {
     const input: AuditFormData = {
-      teamSize: "11-50",
-      companyStage: "Series A",
-      primaryGoal: "reduce-cost",
+      teamSize: 30,
+      useCase: "coding",
       tools: [
         {
           id: "5",
           toolId: "chatgpt",
           plan: "plus",
-          seats: "10",
-          monthlySpend: "200",
+          seats: 10,
+          monthlySpend: 200,
         },
         {
           id: "6",
           toolId: "claude",
           plan: "pro",
-          seats: "10",
-          monthlySpend: "200",
+          seats: 10,
+          monthlySpend: 200,
         },
       ],
     };
