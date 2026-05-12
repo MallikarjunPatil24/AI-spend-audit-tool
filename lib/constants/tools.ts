@@ -13,6 +13,7 @@ export interface ToolConfig {
   name: string;
   vendor: string;
   color: string;
+  logoUrl?: string;
   plans: PlanConfig[];
 }
 
@@ -22,6 +23,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "Cursor",
     vendor: "Anysphere",
     color: "#6366f1",
+    logoUrl: "/logos/cursor.svg",
     plans: [
       { id: "hobby",      label: "Hobby",      priceHint: "Free" },
       { id: "pro",        label: "Pro",        priceHint: "$20/seat/mo" },
@@ -34,6 +36,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "GitHub Copilot",
     vendor: "GitHub (Microsoft)",
     color: "#24292e",
+    logoUrl: "/logos/copilot.svg",
     plans: [
       { id: "individual", label: "Individual", priceHint: "$10/seat/mo" },
       { id: "business",   label: "Business",   priceHint: "$19/seat/mo" },
@@ -45,6 +48,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "Claude",
     vendor: "Anthropic",
     color: "#d97757",
+    logoUrl: "/logos/claude.svg",
     plans: [
       { id: "free",       label: "Free",       priceHint: "$0" },
       { id: "pro",        label: "Pro",        priceHint: "$20/seat/mo" },
@@ -59,6 +63,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "ChatGPT",
     vendor: "OpenAI",
     color: "#10a37f",
+    logoUrl: "/logos/chatgpt.svg",
     plans: [
       { id: "plus",       label: "Plus",       priceHint: "$20/seat/mo" },
       { id: "team",       label: "Team",       priceHint: "$30/seat/mo" },
@@ -71,6 +76,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "Anthropic API",
     vendor: "Anthropic",
     color: "#d97757",
+    logoUrl: "/logos/claude.svg",
     plans: [
       { id: "payg", label: "Pay As You Go", priceHint: "Usage-based", isApiTier: true },
     ],
@@ -80,6 +86,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "OpenAI API",
     vendor: "OpenAI",
     color: "#10a37f",
+    logoUrl: "/logos/openai.svg",
     plans: [
       { id: "payg", label: "Pay As You Go", priceHint: "Usage-based", isApiTier: true },
     ],
@@ -89,6 +96,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "Gemini",
     vendor: "Google",
     color: "#4285f4",
+    logoUrl: "/logos/gemini.svg",
     plans: [
       { id: "pro",   label: "Gemini Advanced", priceHint: "$19.99/seat/mo" },
       { id: "ultra", label: "Gemini Ultra",    priceHint: "Custom", isEnterprise: true },
@@ -100,6 +108,7 @@ export const TOOL_CONFIGS: ToolConfig[] = [
     name: "Windsurf",
     vendor: "Codeium",
     color: "#5b5fc7",
+    logoUrl: "/logos/windsurf.svg",
     plans: [
       { id: "free",  label: "Free",  priceHint: "$0" },
       { id: "pro",   label: "Pro",   priceHint: "$15/seat/mo" },

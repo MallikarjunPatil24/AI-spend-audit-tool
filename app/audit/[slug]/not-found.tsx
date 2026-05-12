@@ -8,10 +8,7 @@ export default function NotFound() {
       <Navbar />
       <main className="flex min-h-[70vh] items-center justify-center px-5">
         <div className="text-center max-w-sm">
-          <div
-            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
-            style={{ background: "rgba(232,93,74,0.08)", border: "1px solid rgba(232,93,74,0.15)" }}
-          >
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-primary/5">
             <RotateCcw className="h-7 w-7 text-primary" strokeWidth={1.5} />
           </div>
           <h1 className="text-xl font-extrabold tracking-tight text-foreground mb-2">

@@ -46,12 +46,8 @@ export function AuditForm() {
       {/* Page header */}
       <div className="relative overflow-hidden border-b border-border bg-card">
         <div
-          className="absolute inset-0 -z-10 bg-dot-grid opacity-40"
-          aria-hidden="true"
-        />
-        <div
           className="absolute inset-0 -z-10"
-          style={{ background: "radial-gradient(ellipse 60% 80% at 50% 0%, rgba(79,70,229,0.08) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(ellipse 60% 80% at 50% 0%, rgba(79,70,229,0.05) 0%, transparent 70%)" }}
           aria-hidden="true"
         />
         <div className="mx-auto max-w-5xl px-5 py-12 sm:py-16">
@@ -63,7 +59,7 @@ export function AuditForm() {
               <div className="text-[11px] font-semibold uppercase tracking-[0.1em] text-primary mb-0.5">
                 Audit Your Stack
               </div>
-              <h1 className="text-2xl font-extrabold tracking-[-0.025em] text-foreground sm:text-3xl">
+              <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
                 Audit My AI Stack
               </h1>
             </div>

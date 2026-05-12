@@ -9,12 +9,23 @@ interface SendConfirmationProps {
   publicSlug: string;
 }
 
+type SendConfirmationResult =
+  | { success: true; messageId: string; simulated?: boolean }
+  | { success: false; error: string };
+
 export async function sendAuditConfirmation(props: SendConfirmationProps) {
   const resend = getResend();
+  const from = process.env.RESEND_FROM_EMAIL ?? "SpendScope <onboarding@resend.dev>";
   
   if (!resend) {
-    console.log("Simulating email send in development (no RESEND_API_KEY).");
-    return { success: true, messageId: "simulated" };
+    const message = "RESEND_API_KEY is not configured. Email send was simulated.";
+    console.warn("[SpendScope email]", message, { to: props.email });
+
+    if (process.env.NODE_ENV === "production") {
+      return { success: false, error: message } satisfies SendConfirmationResult;
+    }
+
+    return { success: true, messageId: "simulated", simulated: true } satisfies SendConfirmationResult;
   }
 
   try {
@@ -26,20 +37,38 @@ export async function sendAuditConfirmation(props: SendConfirmationProps) {
     });
 
     const { data, error } = await resend.emails.send({
-      from: "SpendScope <onboarding@resend.dev>", // Testing domain provided by Resend
+      from,
       to: props.email,
       subject: "Your SpendScope Audit Results & Savings Opportunities",
       html,
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      return { success: false, error: error.message };
+      console.error("[SpendScope email] Resend send failed:", {
+        to: props.email,
+        from,
+        message: error.message,
+        name: error.name,
+      });
+      return { success: false, error: error.message } satisfies SendConfirmationResult;
     }
 
-    return { success: true, messageId: data?.id };
+    console.log("[SpendScope email] Email sent successfully:", {
+      to: props.email,
+      from,
+      messageId: data?.id,
+    });
+
+    return {
+      success: true,
+      messageId: data?.id ?? "unknown",
+    } satisfies SendConfirmationResult;
   } catch (err) {
-    console.error("Failed to send email:", err);
-    return { success: false, error: "Internal error sending email" };
+    console.error("[SpendScope email] Unexpected email failure:", {
+      to: props.email,
+      from,
+      error: err,
+    });
+    return { success: false, error: "Internal error sending email" } satisfies SendConfirmationResult;
   }
 }

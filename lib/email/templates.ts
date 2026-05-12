@@ -34,10 +34,10 @@ export function generateAuditConfirmationHtml({
         .stat-label { font-size: 12px; color: #737373; text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em; }
         .stat-value { font-size: 24px; font-weight: 800; color: #1a1a1a; margin-top: 4px; }
         .savings-value { color: #E85D4A; }
-        .summary { background: #fde8e5; border: 1px solid #fca99e; padding: 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; color: #c0392b; }
+        .summary { background: #eef2ff; border: 1px solid #c7d2fe; padding: 16px; border-radius: 8px; font-size: 14px; margin-bottom: 24px; color: #3730a3; }
         .button-container { text-align: center; margin-top: 32px; margin-bottom: 32px; }
-        .button { background: #E85D4A; color: #ffffff; padding: 12px 24px; border-radius: 9999px; text-decoration: none; font-weight: 700; display: inline-block; }
-        .credex { background: #f9f9f9; padding: 16px; border-radius: 8px; font-size: 13px; color: #737373; margin-top: 24px; border-left: 4px solid #3b82f6; }
+        .button { background: #4F46E5; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; }
+        .credits { background: #f8fafc; padding: 16px; border-radius: 8px; font-size: 13px; color: #6B7280; margin-top: 24px; border-left: 4px solid #4F46E5; }
         .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #a3a3a3; }
       </style>
     </head>
@@ -72,9 +72,9 @@ export function generateAuditConfirmationHtml({
         </div>
 
         ${isHighSavings ? `
-        <div class="credex">
+        <div class="credits">
           <strong>Pro tip:</strong> With savings this high (${formatAnnual(totalMonthlySavings * 12)}/yr), 
-          infrastructure credits via Credex or AWS Activate could significantly reduce your bottom line further.
+          infrastructure credits or committed-use discounts could reduce your bottom line further.
         </div>
         ` : ""}
 

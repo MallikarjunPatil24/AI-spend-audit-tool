@@ -36,10 +36,7 @@ function EmptyState() {
   return (
     <main className="flex min-h-[60vh] items-center justify-center px-5">
       <div className="text-center max-w-sm">
-        <div
-          className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl"
-          style={{ background: "rgba(232,93,74,0.08)", border: "1px solid rgba(232,93,74,0.15)" }}
-        >
+        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/10 bg-primary/5">
           <RotateCcw className="h-7 w-7 text-primary" strokeWidth={1.5} />
         </div>
         <h1 className="text-xl font-extrabold tracking-tight text-foreground mb-2">
@@ -222,10 +219,7 @@ export default function AuditResultsPage() {
               )}
 
               {/* Disclaimer */}
-              <div
-                className="rounded-2xl px-5 py-4"
-                style={{ background: "rgba(232,93,74,0.04)", border: "1px solid rgba(232,93,74,0.10)" }}
-              >
+              <div className="rounded-lg border border-border bg-muted/30 px-5 py-4">
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
                   <strong className="text-foreground">Disclaimer:</strong> SpendScope uses publicly
                   available vendor pricing and conservative estimation logic. Actual savings may vary

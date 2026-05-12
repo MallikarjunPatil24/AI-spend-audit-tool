@@ -54,7 +54,14 @@ export async function createAudit(
  * Fetches a public audit by slug.
  */
 export async function getAuditBySlug(slug: string): Promise<AuditRow | null> {
-  const supabase = getAdminClient();
+  let supabase: ReturnType<typeof getAdminClient>;
+
+  try {
+    supabase = getAdminClient();
+  } catch (error) {
+    console.error("Unable to create Supabase admin client:", error);
+    return null;
+  }
 
   const { data, error } = await supabase
     .from("audits")

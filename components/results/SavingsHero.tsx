@@ -7,7 +7,8 @@ interface SavingsHeroProps {
 }
 
 export function SavingsHero({ result }: SavingsHeroProps) {
-  const { totalMonthlySpend, totalMonthlySavings, totalAnnualSavings, optimizationScore } = result;
+  const { totalMonthlySpend, totalMonthlySavings, totalAnnualSavings, optimizationScore } =
+    result;
   const isOptimized = totalMonthlySavings === 0;
   const isHighSavings = totalMonthlySavings >= 500;
   const savingsPct = totalMonthlySpend > 0
@@ -16,108 +17,125 @@ export function SavingsHero({ result }: SavingsHeroProps) {
 
   return (
     <section
-      className="bg-coral relative overflow-hidden"
+      className="bg-background relative overflow-hidden border-b border-border"
       aria-label="Audit results summary"
     >
-      {/* Dot grid */}
-      <div className="absolute inset-0 bg-dot-grid opacity-25 pointer-events-none" aria-hidden="true" />
+      {/* Decorative Ramp-like dot grid for audit hero */}
+      <div
+        className="absolute inset-0 ramp-grid-bg opacity-40 pointer-events-none"
+        aria-hidden="true"
+      />
 
-      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 py-14 sm:py-20">
-
-        {/* Label */}
-        <div className="mb-6 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white">
-            ✦ Audit Complete
-          </span>
+      <div className="relative mx-auto max-w-5xl px-5 sm:px-8 py-12 sm:py-16">
+        {/* Section Badge */}
+        <div className="mb-8 flex justify-center">
+          <span className="section-eyebrow">Audit complete</span>
         </div>
 
         {isOptimized ? (
-          /* ── Already Optimized State ── */
+          /* Already Optimized State */
           <div className="text-center">
             <div className="mb-4 flex justify-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20">
-                <TrendingUp className="h-8 w-8 text-white" strokeWidth={1.75} />
+              <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10">
+                <TrendingUp
+                  className="h-7 w-7 text-primary"
+                  strokeWidth={1.75}
+                  aria-hidden="true"
+                />
               </div>
             </div>
-            <h1 className="text-3xl font-extrabold tracking-[-0.03em] text-white sm:text-4xl">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
               Your stack is well optimized
             </h1>
-            <p className="mt-3 text-base text-white/75 max-w-md mx-auto font-medium leading-relaxed">
+            <p className="mt-3 text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
               Based on your reported plans, seat counts, and team size, no significant
               optimizations were identified. You&apos;re already in good shape.
             </p>
           </div>
         ) : (
-          /* ── Savings State ── */
+          /* Savings State */
           <div>
-            <h1 className="text-center text-[1.75rem] font-extrabold tracking-[-0.03em] text-white/80 sm:text-2xl mb-8">
+            <h1 className="text-center text-2xl font-bold tracking-tight text-foreground sm:text-3xl mb-8">
               Here&apos;s where you can save
             </h1>
 
-            {/* Savings cards */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-
-              {/* Monthly savings */}
-              <div className="card-white p-6 text-center">
+            {/* Savings Cards Grid */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-6">
+              {/* Monthly Savings */}
+              <div className="card p-6 text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-2">
-                  <TrendingDown className="h-4 w-4 text-primary" strokeWidth={2} />
+                  <TrendingDown
+                    className="h-4 w-4 text-success"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
                   <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     Monthly Savings
                   </p>
                 </div>
                 <p
-                  className="text-4xl font-extrabold tracking-[-0.04em] text-foreground sm:text-5xl"
-                  aria-label={`Potential monthly savings: ${formatMonthly(totalMonthlySavings)}`}
+                  className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
+                  aria-label={`Potential monthly savings: ${formatMonthly(
+                    totalMonthlySavings
+                  )}`}
                 >
                   {formatCurrency(totalMonthlySavings)}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1 font-medium">per month</p>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">per month</p>
               </div>
 
-              {/* Annual savings */}
-              <div className="card-white p-6 text-center">
+              {/* Annual Savings */}
+              <div className="card p-6 text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-2">
-                  <TrendingDown className="h-4 w-4 text-primary" strokeWidth={2} />
+                  <TrendingDown
+                    className="h-4 w-4 text-success"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
                   <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     Annual Savings
                   </p>
                 </div>
                 <p
-                  className="text-4xl font-extrabold tracking-[-0.04em] text-foreground sm:text-5xl"
+                  className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
                   aria-label={`Potential annual savings: ${formatAnnual(totalAnnualSavings)}`}
                 >
                   {formatCurrency(totalAnnualSavings)}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1 font-medium">per year</p>
+                <p className="text-xs text-muted-foreground mt-2 font-medium">per year</p>
               </div>
 
-              {/* Score */}
-              <div className="card-white p-6 text-center">
+              {/* Optimization Score */}
+              <div className="card p-6 text-center">
                 <div className="flex items-center justify-center gap-1.5 mb-2">
-                  <Minus className="h-4 w-4 text-primary" strokeWidth={2} />
+                  <Minus
+                    className="h-4 w-4 text-primary"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
                   <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                    Optimization Score
+                    Optimization
                   </p>
                 </div>
                 <p
-                  className="text-4xl font-extrabold tracking-[-0.04em] text-foreground sm:text-5xl"
+                  className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
                   aria-label={`Optimization score: ${optimizationScore} out of 100`}
                 >
                   {optimizationScore}
-                  <span className="text-xl font-bold text-muted-foreground">/100</span>
+                  <span className="text-lg font-bold text-muted-foreground ml-1">/100</span>
                 </p>
-                <p className="text-sm text-muted-foreground mt-1 font-medium">
-                  {savingsPct}% of spend recoverable
+                <p className="text-xs text-muted-foreground mt-2 font-medium">
+                  {savingsPct}% recoverable
                 </p>
               </div>
             </div>
 
-            {/* High-savings Credex callout */}
+            {/* High Savings Callout */}
             {isHighSavings && (
-              <div className="mt-5 rounded-2xl bg-white/15 border border-white/20 px-5 py-4 text-center">
-                <p className="text-sm font-semibold text-white">
-                  💡 With savings this significant, infrastructure credits (Credex, AWS Activate, etc.)
-                  may help reduce your total AI tooling costs even further.
+              <div className="rounded-lg border border-border bg-card px-5 py-4 text-center">
+                <p className="text-sm font-semibold text-foreground">
+                  With savings this significant, infrastructure credits and committed-use discounts
+                  may help reduce total AI tooling costs even further.
                 </p>
               </div>
             )}

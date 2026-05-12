@@ -54,7 +54,7 @@ export function LeadForm({ auditId, publicSlug, result, aiSummary }: LeadFormPro
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {isHighSavings
-            ? "Credex may help reduce these costs further through discounted AI infrastructure credits. Get your report and see if you qualify."
+            ? "Infrastructure credits and committed-use discounts may reduce these costs further. Get your report and see where to investigate next."
             : "Get notified when new optimization opportunities apply to your stack."}
         </p>
       </div>

@@ -2,7 +2,7 @@ export function ResultsSkeleton() {
   return (
     <div className="animate-pulse" aria-label="Loading audit results" aria-busy="true">
       {/* Hero skeleton */}
-      <div className="bg-coral/40 h-64" />
+      <div className="marketing-dot-bg h-64 border-b border-border" />
 
       <div className="mx-auto max-w-4xl px-5 py-10 space-y-8">
         {/* Score */}

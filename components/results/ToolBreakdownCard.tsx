@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { formatMonthly, formatCurrency } from "@/lib/formatters/currency";
 import type { ToolBreakdown } from "@/lib/audit/types";
 import { TOOL_CONFIG_MAP } from "@/lib/constants/tools";
@@ -19,12 +20,20 @@ export function ToolBreakdownCard({ breakdown }: ToolBreakdownCardProps) {
     <div className="card-enterprise p-5">
       <div className="flex items-start justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
-          {/* Brand color dot */}
-          <div
-            className="h-2.5 w-2.5 rounded-full flex-shrink-0"
-            style={{ backgroundColor: config?.color ?? "#9ca3af" }}
-            aria-hidden="true"
-          />
+          {/* Monochrome glyph */}
+          <div className="h-8 w-8 flex items-center justify-center rounded-md bg-zinc-50 flex-shrink-0" aria-hidden="true">
+            {config?.logoUrl ? (
+              <Image
+                src={config.logoUrl}
+                alt={`${config.name} logo`}
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
+            ) : (
+              <Minus className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            )}
+          </div>
           <div>
             <h3 className="text-[0.9375rem] font-bold text-foreground">{breakdown.toolName}</h3>
             <p className="text-[12px] text-muted-foreground font-medium">

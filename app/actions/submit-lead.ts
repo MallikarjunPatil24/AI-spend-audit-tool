@@ -69,13 +69,22 @@ export async function submitLeadAction(formData: FormData) {
     });
 
     // 5. Send Transactional Email
-    await sendAuditConfirmation({
+    const emailResult = await sendAuditConfirmation({
       email: data.email,
       totalMonthlySpend: data.totalMonthlySpend,
       totalMonthlySavings: data.totalMonthlySavings,
       aiSummary: data.aiSummary || null,
       publicSlug: data.publicSlug,
     });
+
+    if (!emailResult.success) {
+      console.error("Lead email delivery failed after report save:", emailResult.error);
+      return {
+        success: false,
+        error:
+          "Your report was saved successfully. Email delivery is limited in development mode.",
+      };
+    }
 
     return { success: true };
   } catch (err) {

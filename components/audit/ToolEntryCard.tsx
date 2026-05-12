@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { X, Layers } from "lucide-react";
 import type { ToolEntry, ToolEntryErrors } from "@/types/audit";
 import { TOOL_CONFIGS, TOOL_CONFIG_MAP } from "@/lib/constants/tools";
@@ -47,12 +48,21 @@ export function ToolEntryCard({
           <div className="flex items-center gap-1.5">
             {toolConfig ? (
               <>
-                <span
-                  className="h-2 w-2 rounded-full"
-                  style={{ backgroundColor: toolConfig.color }}
-                  aria-hidden="true"
-                />
-                <span className="text-[13px] font-semibold text-foreground">{toolConfig.name}</span>
+                {/* Monochrome glyph instead of brand color */}
+                <div className="h-8 w-8 flex items-center justify-center rounded-md bg-zinc-50">
+                  {toolConfig.logoUrl ? (
+                    <Image
+                      src={toolConfig.logoUrl}
+                      alt={`${toolConfig.name} logo`}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 object-contain"
+                    />
+                  ) : (
+                    <Layers className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  )}
+                </div>
+                <span className="text-[13px] font-medium text-foreground">{toolConfig.name}</span>
                 <span className="text-[11px] text-muted-foreground">· {toolConfig.vendor}</span>
               </>
             ) : (

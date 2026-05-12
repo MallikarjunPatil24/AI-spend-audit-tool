@@ -52,6 +52,12 @@ export default async function PublicAuditPage({ params }: PublicAuditPageProps) 
 
   // Cast JSON to AuditResult since we stringified the whole object
   const result = auditRow.tools_json as unknown as AuditResult;
+  const recommendations = Array.isArray(result.recommendations)
+    ? result.recommendations
+    : [];
+  const toolBreakdowns = Array.isArray(result.toolBreakdowns)
+    ? result.toolBreakdowns
+    : [];
 
   return (
     <>
@@ -72,29 +78,36 @@ export default async function PublicAuditPage({ params }: PublicAuditPageProps) 
           />
 
           {/* Recommendations */}
-          {result.recommendations.length > 0 && (
-            <section aria-labelledby="rec-heading">
-              <div className="mb-5 flex items-center justify-between">
-                <h2
-                  id="rec-heading"
-                  className="text-[1.1rem] font-extrabold tracking-tight text-foreground"
-                >
-                  Recommendations
-                  <span className="ml-2 rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-muted-foreground">
-                    {result.recommendations.filter((r) => r.type !== "already-optimized").length || 1}
-                  </span>
-                </h2>
-              </div>
+          <section aria-labelledby="rec-heading">
+            <div className="mb-5 flex items-center justify-between">
+              <h2
+                id="rec-heading"
+                className="text-[1.1rem] font-extrabold tracking-tight text-foreground"
+              >
+                Recommendations
+                <span className="ml-2 rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-semibold text-muted-foreground">
+                  {recommendations.filter((r) => r.type !== "already-optimized").length}
+                </span>
+              </h2>
+            </div>
+
+            {recommendations.length > 0 ? (
               <div className="flex flex-col gap-4">
-                {result.recommendations.map((rec, i) => (
+                {recommendations.map((rec, i) => (
                   <RecommendationCard key={rec.id} rec={rec} index={i} />
                 ))}
               </div>
-            </section>
-          )}
+            ) : (
+              <div className="rounded-lg border border-border bg-card p-5">
+                <p className="text-sm text-muted-foreground">
+                  No optimization recommendations are available for this saved audit.
+                </p>
+              </div>
+            )}
+          </section>
 
           {/* Tool Breakdown */}
-          {result.toolBreakdowns.length > 0 && (
+          {toolBreakdowns.length > 0 && (
             <section aria-labelledby="tools-heading">
               <h2
                 id="tools-heading"
@@ -103,7 +116,7 @@ export default async function PublicAuditPage({ params }: PublicAuditPageProps) 
                 Tool Breakdown
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {result.toolBreakdowns.map((bd) => (
+                {toolBreakdowns.map((bd) => (
                   <ToolBreakdownCard key={`${bd.toolId}-${bd.planId}`} breakdown={bd} />
                 ))}
               </div>

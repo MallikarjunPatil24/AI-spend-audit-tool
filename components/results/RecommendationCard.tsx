@@ -107,10 +107,7 @@ export function RecommendationCard({ rec, index }: RecommendationCardProps) {
 
         {/* ── Savings callout ── */}
         {!isOptimized && rec.estimatedMonthlySavings > 0 && (
-          <div
-            className="flex-shrink-0 rounded-xl p-4 text-center min-w-[120px]"
-            style={{ background: "rgba(232,93,74,0.06)", border: "1px solid rgba(232,93,74,0.12)" }}
-          >
+          <div className="flex-shrink-0 rounded-lg border border-primary/10 bg-primary/5 p-4 text-center min-w-[120px]">
             <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
               Est. Savings
             </p>
